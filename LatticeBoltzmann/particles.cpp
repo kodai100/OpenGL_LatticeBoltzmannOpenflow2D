@@ -71,7 +71,7 @@ void LBMParticle::movepar(float dt)
 		if(y<0)	y = 1+y;
 		if (x > 1) {
 			x = x - 1;
-			y = initPar[k].y;
+			y = rand() / float(RAND_MAX);// initPar[k].y;
 		}
 		if (y > 1)	y-1;	//
 		par[k].x	= x;
