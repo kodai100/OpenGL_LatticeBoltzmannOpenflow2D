@@ -3,13 +3,16 @@
 float framerate = 60;
 float secPerFrame = 1 / framerate;
 
+LatticeBoltzmann* wind_simulator;
+LBMParticle* lbm_particle;
+
 void update(void)
 {
 	
 	cout << frame << endl;
 
-	lbm();
-	movepar(0.1);
+	wind_simulator->update();
+	lbm_particle->movepar(0.1);
 }
 
 void render(void) 
@@ -18,18 +21,21 @@ void render(void)
 	glLoadIdentity();
 	
 	//gdraw();
-	draw();								// DRAW PARTICLES
+	lbm_particle->draw();								// DRAW PARTICLES
 }
 
 void start(void)
 {
-	initlbm();								// INIT LBM
 
-	initpar();
+	wind_simulator = new LatticeBoltzmann();
+	lbm_particle = new LBMParticle(wind_simulator);
 
 }
 
-
+void exit() {
+	delete wind_simulator;
+	delete lbm_particle;
+}
 
 
 
@@ -69,12 +75,12 @@ int main(int argc, char** argv) {
 		frame++;
 	}
 
-	delete U;
-
 	//Exit
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
+
+	exit();
 
 	return 0;
 }

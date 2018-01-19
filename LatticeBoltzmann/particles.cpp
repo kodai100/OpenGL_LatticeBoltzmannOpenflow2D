@@ -6,23 +6,22 @@
 #include "lbm.h"
 #include "particles.h"
 
-//#define PC 2
-//float par[nparmax*PC];
-
-Particle par[nparmax];
-Particle initPar[nparmax];
-
-float initposy[nparmax];
-
-void initpar(void)
+LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 {
+
+	this->boltzmann = boltzmann;
+
+	par = new Particle[nparmax];
+	initPar = new Particle[nparmax];
+	initposy = new float[nparmax];
+
 	for ( int k=0; k<nparmax; k++)
 	{
 		while (true) {
 			float x = rand() / float(RAND_MAX);
 			float y = rand() / float(RAND_MAX);
 
-			if (FLAG[(int)(y * NX) + (int)(x*NX) * NX] == OBSTACLE) continue;
+			if (boltzmann->FLAG[(int)(y * NX) + (int)(x*NX) * NX] == OBSTACLE) continue;
 
 			par[k].x = x;
 			par[k].y = y;
@@ -35,15 +34,20 @@ void initpar(void)
 	}
 }
 
-float BilinearInterpolation(float x,float y,int x1,int x2,int y1,int y2,float f11,float f21,float f22,float f12)
-{
+LBMParticle::~LBMParticle() {
+	delete[] par;
+	delete[] initPar;
+	delete[] initposy;
+}
+
+const float LBMParticle::BilinearInterpolation(float x,float y,int x1,int x2,int y1,int y2,float f11,float f21,float f22,float f12) const{
 	// @Numerical Recipes
 	float t = (x-x1) / (x2 - x1);
 	float u = (y-y1) / (y2 - y1);
 	return (1-t)*(1-u)*f11 + t*(1-u)*f21 + t*u*f22 + (1-t)*u*f12;
 }
 
-void movepar(float dt)
+void LBMParticle::movepar(float dt)
 {
 	int i,j,k;
 	int ip,jp;
@@ -60,8 +64,8 @@ void movepar(float dt)
 		ip = int(x * (NX -1) + NX + 1 ) % (NX);
 		jp = int(y * (NX -1)+ NX + 1 ) % (NX);
 		
-		x = x + BilinearInterpolation(x*(NX-1),y*(NX -1), i,ip, j,jp, U[ i+j*NX ].x,U[ip+j*NX].x,U[ip+jp*NX].x,U[i+jp*NX].x) * dt;
-		y = y + BilinearInterpolation(x*(NX-1),y*(NX -1), i,ip, j,jp, U[ i+j*NX ].y, U[ip+j*NX].y, U[ip+jp*NX].y, U[i+jp*NX].y) * dt;
+		x = x + BilinearInterpolation(x*(NX-1),y*(NX -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].x, boltzmann->U[ip+j*NX].x, boltzmann->U[ip+jp*NX].x, boltzmann->U[i+jp*NX].x) * dt;
+		y = y + BilinearInterpolation(x*(NX-1),y*(NX -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].y, boltzmann->U[ip+j*NX].y, boltzmann->U[ip+jp*NX].y, boltzmann->U[i+jp*NX].y) * dt;
 		
 		if(x<0) x = 1+x;
 		if(y<0)	y = 1+y;
@@ -75,7 +79,7 @@ void movepar(float dt)
 	}
 }
 
-void draw(void)
+void LBMParticle::draw(void)
 {
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
