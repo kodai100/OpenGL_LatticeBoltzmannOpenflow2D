@@ -20,7 +20,7 @@ void render(void)
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
-	//gdraw();
+	wind_simulator->draw();
 	lbm_particle->draw();								// DRAW PARTICLES
 }
 
