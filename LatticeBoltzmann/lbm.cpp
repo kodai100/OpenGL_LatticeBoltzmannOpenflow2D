@@ -23,11 +23,6 @@ LatticeBoltzmann::LatticeBoltzmann() {
 		for(int j = (NX - R2)/2; j < (NX - R2) / 2 + R2 ; j++)
 			FLAG[i + j * NX] = OBSTACLE;
 
-	R2 = 30;
-	for (int i = (NX - R2) / 2; i < (NX - R2) / 2 + R2; i++)
-		for (int j = (NX - R2) / 2; j < (NX - R2) / 2 + R2; j++)
-			FLAG[i + j * NX] = OBSTACLE;
-
 	U = new float2[NX*NX];
 }
 
@@ -110,7 +105,7 @@ void LatticeBoltzmann::draw() {
 	for (int i = 0; i < NX; i++)
 		for (int j = 0; j < NX; j++) {
 
-			if(FLAG[i + j * NX] == OBSTACLE) glColor4f(1, 0, 1, 1);
+			if(FLAG[i + j * NX] == OBSTACLE) glColor4f(0, 0, 0, 1);
 			else glColor4f(U[i + j*NX].x * 5 + 0.5, U[i + j*NX].y * 5 + 0.5, 0, 1);
 
 			glBegin(GL_POLYGON);
