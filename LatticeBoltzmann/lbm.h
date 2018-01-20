@@ -7,7 +7,6 @@
 #define NX 200
 #define NY 100
 
-
 enum CellType { OBSTACLE, FLUID };
 
 class LatticeBoltzmann {

@@ -100,6 +100,11 @@ void LatticeBoltzmann::update(const CellType* flag) {
 						df[1 - c][ip + jp*NX][k] = (1 - relaxation) * df[c][i + j*NX][k] + relaxation* w[k] * rho * (1.0f - (3.0f / 2.0f) * (ux*ux + uy*uy) + 3.0f * (ex[k] * ux + ey[k] * uy) + (9.0f / 2.0f) * (ex[k] * ux + ey[k] * uy) * (ex[k] * ux + ey[k] * uy));
 				}
 			}
+			else {
+				U[i + j*NX][0] = 0;
+				U[i + j*NX][1] = 0;
+				R[i + j*NX] = 1.0;
+			}
 		}
 }
 
