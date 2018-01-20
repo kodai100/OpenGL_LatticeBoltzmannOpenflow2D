@@ -20,9 +20,8 @@ public:
 
 	float df[2][NX*NY][9];	// double buffer
 
-	Vector2f* U;
+	Vector2f U[NX*NY];
 	float R[NX*NY];
-	CellType FLAG[NX*NY];
 
 	float fx = 0.000014;
 
@@ -30,8 +29,9 @@ public:
 	LatticeBoltzmann(const LatticeBoltzmann& orig);
 	~LatticeBoltzmann();
 
-	void update();
-	void draw();
+	static void createObstacle(CellType* flag);
+	void update(const CellType* flag);
+	void draw(const CellType* flag);
 };
 #endif
 

@@ -5,13 +5,13 @@ float secPerFrame = 1 / framerate;
 
 LatticeBoltzmann* wind_simulator;
 LBMParticle* lbm_particle;
+CellType flag[NX*NY];
 
 void update(void)
 {
-	
 	cout << frame << endl;
 
-	wind_simulator->update();
+	wind_simulator->update(flag);
 	lbm_particle->update(0.1);
 }
 
@@ -20,7 +20,7 @@ void render(void)
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
-	if(showGrid) wind_simulator->draw();
+	if(showGrid) wind_simulator->draw(flag);
 	lbm_particle->draw();								// DRAW PARTICLES
 }
 
@@ -30,18 +30,14 @@ void start(void)
 	wind_simulator = new LatticeBoltzmann();
 	lbm_particle = new LBMParticle(wind_simulator);
 
+	LatticeBoltzmann::createObstacle(flag);
+
 }
 
 void exit() {
 	delete wind_simulator;
 	delete lbm_particle;
 }
-
-
-
-
-
-
 
 
 int main(int argc, char** argv) {

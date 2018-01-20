@@ -14,26 +14,27 @@ LatticeBoltzmann::LatticeBoltzmann() {
 			df[0][j][k] = df[1][j][k] = w[k] * rho * (1.0f - (3.0f / 2.0f) * (ux*ux + uy*uy) + 3.0f * (ex[k] * ux + ey[k] * uy) + (9.0f / 2.0f) * (ex[k] * ux + ey[k] * uy) * (ex[k] * ux + ey[k] * uy));
 		}
 
-	for (int j = 0; j < NX*NY; j++)
-		FLAG[j] = FLUID;
-
-	// obstacle
-	int R2 = 10;
-	for(int i = (NX - R2) / 4; i < (NX - R2) / 4 + 5; i++)
-		for(int j = 0; j < (NY - R2) / 3 + R2 ; j++)
-			FLAG[i + j * NX] = OBSTACLE;
-
-	U = new Vector2f[NX*NY];
 }
 
 LatticeBoltzmann::LatticeBoltzmann(const LatticeBoltzmann& orig) {}
 
-LatticeBoltzmann::~LatticeBoltzmann() {
-	delete U;
+LatticeBoltzmann::~LatticeBoltzmann() {}
+
+void LatticeBoltzmann::createObstacle(CellType* f) {
+
+	for (int j = 0; j < NX*NY; j++)
+		f[j] = FLUID;
+
+	// obstacle
+	int R2 = 10;
+	for (int i = (NX - R2) / 4; i < (NX - R2) / 4 + 5; i++)
+		for (int j = 0; j < (NY - R2) / 3 + R2; j++)
+			f[i + j * NX] = OBSTACLE;
+
 }
 
 // we use BGK single relaxation time model with no relaxation on the bounceback nodes Zou, He, 1997
-void LatticeBoltzmann::update() {
+void LatticeBoltzmann::update(const CellType* flag) {
 
 	// swap buffer
 	static int c = 1;
@@ -48,7 +49,7 @@ void LatticeBoltzmann::update() {
 			float relaxation = 1.95;
 
 			// —¬‘ÌŠiŽq‚Ì‚ÝŒvŽZ
-			if (FLAG[i + j * NX] == FLUID) {
+			if (flag[i + j * NX] == FLUID) {
 				float rho = 0, ux = 0, uy = 0;
 
 				// calculate density and velocity using neighbor cell
@@ -90,7 +91,7 @@ void LatticeBoltzmann::update() {
 					int jp = (j + ey[k] + NY) % (NY);
 
 					// collision + streaming
-					if (FLAG[ip + jp * NX] == OBSTACLE) {
+					if (flag[ip + jp * NX] == OBSTACLE) {
 						// Reflect
 						// BGK model
 						df[1 - c][i + j*NX][inv[k]] = (1 - relaxation) * df[c][i + j*NX][k] + relaxation* w[k] * rho * (1.0f - (3.0f / 2.0f) * (ux*ux + uy*uy) + 3.0f * (ex[k] * ux + ey[k] * uy) + (9.0f / 2.0f) * (ex[k] * ux + ey[k] * uy) * (ex[k] * ux + ey[k] * uy));
@@ -103,7 +104,7 @@ void LatticeBoltzmann::update() {
 }
 
 
-void LatticeBoltzmann::draw() {
+void LatticeBoltzmann::draw(const CellType* flag) {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -113,7 +114,7 @@ void LatticeBoltzmann::draw() {
 	for (int i = 0; i < NX; i++)
 		for (int j = 0; j < NY; j++) {
 
-			if(FLAG[i + j * NX] == OBSTACLE) glColor4f(0, 0, 0, 1);
+			if(flag[i + j * NX] == OBSTACLE) glColor4f(0, 0, 0, 1);
 			else glColor4f(U[i + j*NX][0] * 5 + 0.5, U[i + j*NX][1] * 5 + 0.5, 0, 1);
 
 			glBegin(GL_POLYGON);

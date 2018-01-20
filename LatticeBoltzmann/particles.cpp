@@ -19,7 +19,7 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 			float x = rand() / float(RAND_MAX);
 			float y = rand() / float(RAND_MAX);
 
-			if (boltzmann->FLAG[(int)(x * NX) + (int)(y*NY) * NX] == OBSTACLE) continue;
+			//if (boltzmann->FLAG[(int)(x * NX) + (int)(y*NY) * NX] == OBSTACLE) continue;
 
 			par[k][0] = x;
 			par[k][1] = y;
