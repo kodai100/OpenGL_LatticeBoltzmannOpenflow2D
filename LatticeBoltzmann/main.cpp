@@ -20,13 +20,13 @@ void render(void)
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
-	wind_simulator->draw();
+	if(showGrid) wind_simulator->draw();
 	lbm_particle->draw();								// DRAW PARTICLES
 }
 
 void start(void)
 {
-
+	showGrid = false;
 	wind_simulator = new LatticeBoltzmann();
 	lbm_particle = new LBMParticle(wind_simulator);
 
@@ -123,6 +123,13 @@ static void error_callback(int error, const char* description) {
 
 //Key listener
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (action != GLFW_RELEASE)
+		return;
+	switch (key) {
+	case GLFW_KEY_ENTER:
+		showGrid = !showGrid;
+		break;
+	}
 }
 
 //Mouse listener

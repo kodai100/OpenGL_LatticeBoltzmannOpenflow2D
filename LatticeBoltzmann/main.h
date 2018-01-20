@@ -12,6 +12,7 @@
 using namespace std;
 
 int frame;
+bool showGrid;
 
 void start();
 void update();
