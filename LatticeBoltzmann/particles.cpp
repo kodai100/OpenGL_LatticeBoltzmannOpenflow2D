@@ -67,13 +67,12 @@ void LBMParticle::movepar(float dt)
 		x = x + BilinearInterpolation(x*(NX-1),y*(NY -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].x, boltzmann->U[ip+j*NX].x, boltzmann->U[ip+jp*NX].x, boltzmann->U[i+jp*NX].x) * dt;
 		y = y + BilinearInterpolation(x*(NX-1),y*(NY -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].y, boltzmann->U[ip+j*NX].y, boltzmann->U[ip+jp*NX].y, boltzmann->U[i+jp*NX].y) * dt;
 		
-		if(x<0) x = 1+x;
-		if(y<0)	y = 1+y;
-		if (x > 1) {
+		
+		if (x > 1 || y > 1 || x < 0 || y < 0) {
 			x = x - 1;
 			y = rand() / float(RAND_MAX);// initPar[k].y;
 		}
-		if (y > 1)	y-1;	//
+
 		par[k].x	= x;
 		par[k].y	= y;
 	}
