@@ -12,7 +12,7 @@ void update(void)
 	cout << frame << endl;
 
 	wind_simulator->update();
-	lbm_particle->movepar(0.1);
+	lbm_particle->update(0.1);
 }
 
 void render(void) 

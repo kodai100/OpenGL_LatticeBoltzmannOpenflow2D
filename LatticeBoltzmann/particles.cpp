@@ -12,7 +12,6 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 	this->boltzmann = boltzmann;
 
 	par = new Particle[nparmax];
-	initposy = new float[nparmax];
 
 	for ( int k=0; k<nparmax; k++)
 	{
@@ -32,7 +31,6 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 
 LBMParticle::~LBMParticle() {
 	delete[] par;
-	delete[] initposy;
 }
 
 const float LBMParticle::BilinearInterpolation(float x,float y,int x1,int x2,int y1,int y2,float f11,float f21,float f22,float f12) const{
@@ -42,7 +40,7 @@ const float LBMParticle::BilinearInterpolation(float x,float y,int x1,int x2,int
 	return (1-t)*(1-u)*f11 + t*(1-u)*f21 + t*u*f22 + (1-t)*u*f12;
 }
 
-void LBMParticle::movepar(float dt)
+void LBMParticle::update(float dt)
 {
 	int i,j,k;
 	int ip,jp;

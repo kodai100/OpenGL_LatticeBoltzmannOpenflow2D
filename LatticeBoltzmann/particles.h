@@ -12,12 +12,10 @@ public:
 
 	Particle* par;
 
-	float* initposy;
-
 	LBMParticle(LatticeBoltzmann* boltzmann);
 	~LBMParticle();
 
-	void movepar(float dt);
+	void update(float dt);
 	void draw();
 	const float BilinearInterpolation(float x, float y, int x1, int x2, int y1, int y2, float f11, float f21, float f22, float f12) const;
 };
