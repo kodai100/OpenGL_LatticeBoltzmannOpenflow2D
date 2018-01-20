@@ -2,7 +2,8 @@
 #define LBM_H
 
 #include <GLFW/glfw3.h>
-#define NX 100
+#define NX 200
+#define NY 100
 
 typedef struct float2 {
 	float x, y;
@@ -25,11 +26,11 @@ public:
 	const int inv[9] = { 0, 3,4, 1, 2,  7, 8, 5, 6 };
 	const float w[9] = { 4.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 36.0f, 1.0f / 36.0f, 1.0f / 36.0f, 1.0f / 36.0f };
 
-	float df[2][NX*NX][9];	// double buffer
+	float df[2][NX*NY][9];	// double buffer
 
 	float2* U;
-	float R[NX*NX];
-	CellType FLAG[NX*NX];
+	float R[NX*NY];
+	CellType FLAG[NX*NY];
 
 	float fx = 0.000014;
 

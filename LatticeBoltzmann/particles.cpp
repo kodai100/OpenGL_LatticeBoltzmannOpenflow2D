@@ -21,7 +21,7 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 			float x = rand() / float(RAND_MAX);
 			float y = rand() / float(RAND_MAX);
 
-			if (boltzmann->FLAG[(int)(y * NX) + (int)(x*NX) * NX] == OBSTACLE) continue;
+			if (boltzmann->FLAG[(int)(x * NX) + (int)(y*NY) * NX] == OBSTACLE) continue;
 
 			par[k].x = x;
 			par[k].y = y;
@@ -59,13 +59,13 @@ void LBMParticle::movepar(float dt)
 		y = par[k].y;
 		
 		i = int(x * (NX -1) + NX) % (NX);	// x=0 => i = 0, x=1 => L-2
-		j = int(y * (NX -1) + NX) % (NX);
+		j = int(y * (NY -1) + NY) % (NY);
 		
 		ip = int(x * (NX -1) + NX + 1 ) % (NX);
-		jp = int(y * (NX -1)+ NX + 1 ) % (NX);
+		jp = int(y * (NY -1)+ NY + 1 ) % (NY);
 		
-		x = x + BilinearInterpolation(x*(NX-1),y*(NX -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].x, boltzmann->U[ip+j*NX].x, boltzmann->U[ip+jp*NX].x, boltzmann->U[i+jp*NX].x) * dt;
-		y = y + BilinearInterpolation(x*(NX-1),y*(NX -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].y, boltzmann->U[ip+j*NX].y, boltzmann->U[ip+jp*NX].y, boltzmann->U[i+jp*NX].y) * dt;
+		x = x + BilinearInterpolation(x*(NX-1),y*(NY -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].x, boltzmann->U[ip+j*NX].x, boltzmann->U[ip+jp*NX].x, boltzmann->U[i+jp*NX].x) * dt;
+		y = y + BilinearInterpolation(x*(NX-1),y*(NY -1), i,ip, j,jp, boltzmann->U[ i+j*NX ].y, boltzmann->U[ip+j*NX].y, boltzmann->U[ip+jp*NX].y, boltzmann->U[i+jp*NX].y) * dt;
 		
 		if(x<0) x = 1+x;
 		if(y<0)	y = 1+y;

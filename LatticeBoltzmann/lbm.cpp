@@ -4,7 +4,7 @@
 LatticeBoltzmann::LatticeBoltzmann() {
 
 	// 全格子のdfを初速計算して
-	for (int j = 0; j < NX*NX; j++)
+	for (int j = 0; j < NX*NY; j++)
 		for (int k = 0; k < 9; k++) {
 			//df[0][j][k] = df[1][j][k] = w[k];
 			float rho = 1.0;
@@ -14,16 +14,16 @@ LatticeBoltzmann::LatticeBoltzmann() {
 			df[0][j][k] = df[1][j][k] = w[k] * rho * (1.0f - (3.0f / 2.0f) * (ux*ux + uy*uy) + 3.0f * (ex[k] * ux + ey[k] * uy) + (9.0f / 2.0f) * (ex[k] * ux + ey[k] * uy) * (ex[k] * ux + ey[k] * uy));
 		}
 
-	for (int j = 0; j < NX*NX; j++)
+	for (int j = 0; j < NX*NY; j++)
 		FLAG[j] = FLUID;
 
 	// obstacle
 	int R2 = 10;
-	for(int i = (NX -R2) / 2; i < (NX - R2) / 2 + R2; i++)
-		for(int j = (NX - R2)/2; j < (NX - R2) / 2 + R2 ; j++)
+	for(int i = (NX - R2) / 4; i < (NX - R2) / 4 + 5; i++)
+		for(int j = 0; j < (NY - R2) / 2 + R2 ; j++)
 			FLAG[i + j * NX] = OBSTACLE;
 
-	U = new float2[NX*NX];
+	U = new float2[NX*NY];
 }
 
 LatticeBoltzmann::LatticeBoltzmann(const LatticeBoltzmann& orig) {}
@@ -43,7 +43,7 @@ void LatticeBoltzmann::update() {
 
 	// 全格子について
 	for(int i = 0 ; i < NX; i++)
-		for (int j = 0; j < NX; j++) {
+		for (int j = 0; j < NY; j++) {
 
 			float relaxation = 1.95;
 
@@ -79,7 +79,7 @@ void LatticeBoltzmann::update() {
 				// update neighbor df
 				for (int k = 0; k < 9; k++) {
 					int ip = (i + ex[k] + NX) % (NX);
-					int jp = (j + ey[k] + NX) % (NX);
+					int jp = (j + ey[k] + NY) % (NY);
 
 					// collision + streaming
 					if (FLAG[ip + jp * NX] == OBSTACLE) {
@@ -103,16 +103,16 @@ void LatticeBoltzmann::draw() {
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
 	for (int i = 0; i < NX; i++)
-		for (int j = 0; j < NX; j++) {
+		for (int j = 0; j < NY; j++) {
 
 			if(FLAG[i + j * NX] == OBSTACLE) glColor4f(0, 0, 0, 1);
 			else glColor4f(U[i + j*NX].x * 5 + 0.5, U[i + j*NX].y * 5 + 0.5, 0, 1);
 
 			glBegin(GL_POLYGON);
-			glVertex2d((i / (float)NX), (j / (float)NX));
-			glVertex2d((i / (float)NX), ((j + 1) / (float)NX));
-			glVertex2d(((i + 1) / (float)NX), ((j + 1) / (float)NX));
-			glVertex2d(((i + 1) / (float)NX), (j / (float)NX));
+			glVertex2d((i / (float)NX), (j / (float)NY));
+			glVertex2d((i / (float)NX), ((j + 1) / (float)NY));
+			glVertex2d(((i + 1) / (float)NX), ((j + 1) / (float)NY));
+			glVertex2d(((i + 1) / (float)NX), (j / (float)NY));
 			glEnd();
 
 		}

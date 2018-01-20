@@ -90,7 +90,7 @@ void initGLContext() {
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glViewport(0, 0, 640, 640);
+	glViewport(0, 0, 1280, 640);
 	glOrtho(0, 1, 0, 1, 0, 1);
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -102,7 +102,7 @@ GLFWwindow* initGLFWContext() {
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	GLFWwindow* window = glfwCreateWindow(640, 640, "Snow Simulator", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 640, "Snow Simulator", NULL, NULL);
 
 	if (!window) {
 		glfwTerminate();
