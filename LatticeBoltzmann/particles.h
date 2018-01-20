@@ -11,7 +11,6 @@ public:
 	LatticeBoltzmann* boltzmann;
 
 	Particle* par;
-	Particle* initPar;
 
 	float* initposy;
 

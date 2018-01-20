@@ -12,7 +12,6 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 	this->boltzmann = boltzmann;
 
 	par = new Particle[nparmax];
-	initPar = new Particle[nparmax];
 	initposy = new float[nparmax];
 
 	for ( int k=0; k<nparmax; k++)
@@ -26,9 +25,6 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 			par[k].x = x;
 			par[k].y = y;
 
-			initPar[k].x = x;
-			initPar[k].y = y;
-
 			break;
 		}
 	}
@@ -36,7 +32,6 @@ LBMParticle::LBMParticle(LatticeBoltzmann* boltzmann)
 
 LBMParticle::~LBMParticle() {
 	delete[] par;
-	delete[] initPar;
 	delete[] initposy;
 }
 
@@ -55,6 +50,7 @@ void LBMParticle::movepar(float dt)
 
 	for ( k=0; k<nparmax; k++)
 	{
+
 		x = par[k].x;
 		y = par[k].y;
 		
@@ -70,11 +66,12 @@ void LBMParticle::movepar(float dt)
 		
 		if (x > 1 || y > 1 || x < 0 || y < 0) {
 			x = x - 1;
-			y = rand() / float(RAND_MAX);// initPar[k].y;
+			y = rand() / float(RAND_MAX);
 		}
 
 		par[k].x	= x;
 		par[k].y	= y;
+		
 	}
 }
 
