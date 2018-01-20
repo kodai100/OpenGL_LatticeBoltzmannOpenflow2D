@@ -20,7 +20,7 @@ LatticeBoltzmann::LatticeBoltzmann() {
 	// obstacle
 	int R2 = 10;
 	for(int i = (NX - R2) / 4; i < (NX - R2) / 4 + 5; i++)
-		for(int j = 0; j < (NY - R2) / 2 + R2 ; j++)
+		for(int j = 0; j < (NY - R2) / 3 + R2 ; j++)
 			FLAG[i + j * NX] = OBSTACLE;
 
 	U = new float2[NX*NY];
@@ -64,6 +64,14 @@ void LatticeBoltzmann::update() {
 				
 				// Boundary
 				if (i == 0 || i == NX - 1) {
+					rho = 1.0;
+					ux = 0.05;
+					uy = 0.0;
+					relaxation = 1;
+				}
+
+				// Boundary
+				if (j == 0 || j == NY - 1) {
 					rho = 1.0;
 					ux = 0.05;
 					uy = 0.0;
