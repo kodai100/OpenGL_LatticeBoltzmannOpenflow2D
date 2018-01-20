@@ -102,7 +102,7 @@ GLFWwindow* initGLFWContext() {
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	GLFWwindow* window = glfwCreateWindow(1280, 640, "Snow Simulator", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 640, "Lattice Boltzmann", NULL, NULL);
 
 	if (!window) {
 		glfwTerminate();

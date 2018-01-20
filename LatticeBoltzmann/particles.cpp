@@ -86,7 +86,7 @@ void LBMParticle::draw(void)
 	glEnable (GL_POINT_SMOOTH);
 	glHint (GL_POINT_SMOOTH_HINT, GL_NICEST);
 
-	glPointSize(4);
+	glPointSize(2);
 	glColor4f(0,1,1,1);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2,GL_FLOAT,0,par);
