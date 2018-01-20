@@ -1,8 +1,4 @@
-
-
-typedef struct Particle {
-	float x, y;
-} Particle;
+#include "Vector2f.h"
 
 class LBMParticle {
 public:
@@ -10,7 +6,7 @@ public:
 
 	LatticeBoltzmann* boltzmann;
 
-	Particle* par;
+	Vector2f* par;
 
 	LBMParticle(LatticeBoltzmann* boltzmann);
 	~LBMParticle();

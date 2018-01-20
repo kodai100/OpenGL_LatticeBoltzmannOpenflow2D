@@ -151,11 +151,13 @@
     <ClInclude Include="lbm.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="particles.h" />
+    <ClInclude Include="Vector2f.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lbm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particles.cpp" />
+    <ClCompile Include="Vector2f.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

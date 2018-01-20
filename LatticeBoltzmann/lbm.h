@@ -2,18 +2,10 @@
 #define LBM_H
 
 #include <GLFW/glfw3.h>
+#include "Vector2f.h"
+
 #define NX 200
 #define NY 100
-
-typedef struct float2 {
-	float x, y;
-
-	float2() {}
-	float2(float x, float y) {
-		x = x;
-		y = y;
-	}
-} float2;
 
 
 enum CellType { OBSTACLE, FLUID };
@@ -28,7 +20,7 @@ public:
 
 	float df[2][NX*NY][9];	// double buffer
 
-	float2* U;
+	Vector2f* U;
 	float R[NX*NY];
 	CellType FLAG[NX*NY];
 

@@ -23,7 +23,7 @@ LatticeBoltzmann::LatticeBoltzmann() {
 		for(int j = 0; j < (NY - R2) / 3 + R2 ; j++)
 			FLAG[i + j * NX] = OBSTACLE;
 
-	U = new float2[NX*NY];
+	U = new Vector2f[NX*NY];
 }
 
 LatticeBoltzmann::LatticeBoltzmann(const LatticeBoltzmann& orig) {}
@@ -78,8 +78,8 @@ void LatticeBoltzmann::update() {
 					relaxation = 1;
 				}
 
-				U[i + j*NX].x = ux;
-				U[i + j*NX].y = uy;
+				U[i + j*NX][0] = ux;
+				U[i + j*NX][1] = uy;
 				R[i + j*NX] = rho;
 
 				//ux = ux + fx;
@@ -114,7 +114,7 @@ void LatticeBoltzmann::draw() {
 		for (int j = 0; j < NY; j++) {
 
 			if(FLAG[i + j * NX] == OBSTACLE) glColor4f(0, 0, 0, 1);
-			else glColor4f(U[i + j*NX].x * 5 + 0.5, U[i + j*NX].y * 5 + 0.5, 0, 1);
+			else glColor4f(U[i + j*NX][0] * 5 + 0.5, U[i + j*NX][1] * 5 + 0.5, 0, 1);
 
 			glBegin(GL_POLYGON);
 			glVertex2d((i / (float)NX), (j / (float)NY));
