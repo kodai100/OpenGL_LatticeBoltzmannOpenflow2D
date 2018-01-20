@@ -14,6 +14,8 @@ using namespace std;
 int frame;
 bool showGrid;
 
+void updateFlag();
+
 void start();
 void update();
 void render();

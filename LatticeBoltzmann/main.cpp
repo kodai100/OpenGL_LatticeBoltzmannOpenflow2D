@@ -7,12 +7,18 @@ LatticeBoltzmann* wind_simulator;
 LBMParticle* lbm_particle;
 CellType flag[NX*NY];
 
+Vector2f center;
+
 void update(void)
 {
 	cout << frame << endl;
 
+	updateFlag();
+
 	wind_simulator->update(flag);
 	lbm_particle->update(0.1);
+
+	center[0] -= 0.01;
 }
 
 void render(void) 
@@ -26,11 +32,13 @@ void render(void)
 
 void start(void)
 {
+	center = Vector2f(NX/2.0f, NY/2.0f);
+
 	showGrid = false;
 	wind_simulator = new LatticeBoltzmann();
 	lbm_particle = new LBMParticle(wind_simulator);
 
-	LatticeBoltzmann::createObstacle(flag);
+	// LatticeBoltzmann::createObstacle(flag);
 
 }
 
@@ -38,6 +46,30 @@ void exit() {
 	delete wind_simulator;
 	delete lbm_particle;
 }
+
+void updateFlag() {
+	for (int i = 0; i < NX; i++) {
+		for (int j = 0; j < NY; j++) {
+			if (10 * 10 > (center[0] - i) * (center[0] - i) + (center[1] - j) * (center[1] - j)) {
+				flag[i + j * NX] = OBSTACLE;
+			} else{
+				flag[i + j * NX] = FLUID;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 int main(int argc, char** argv) {
